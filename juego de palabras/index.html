@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Palabras</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: palevioletred;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.juego {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.palabra-oculta {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+input[type="text"] {
+    width: 100px;
+    margin: 10px 0;
+}
+
+button {
+    background-color: aqua;
+    color: black;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.intentos {
+    margin: 10px 0;
+}
+
+#mensaje {
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+    <h1>Juego de Palabras</h1>
+    <div class="juego">
+        <p>Adivina la palabra:</p>
+        <div class="palabra-oculta" id="palabra-oculta"></div>
+        <input type="text" id="entrada" placeholder="Ingresa una letra">
+        <button id="adivinar">Adivinar</button>
+        <p class="intentos">Intentos restantes: <span id="intentos">5</span></p>
+        <p id="mensaje"></p>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const palabras = ["manzana", "naranja", "pera", "uva", "sandía"];
+    const palabraOculta = palabras[Math.floor(Math.random() * palabras.length)];
+    const palabraAdivinada = new Array(palabraOculta.length).fill("_");
+    const intentosMaximos = 5;
+    let intentos = intentosMaximos;
+
+    const palabraOcultaElement = document.getElementById("palabra-oculta");
+    const entradaElement = document.getElementById("entrada");
+    const adivinarButton = document.getElementById("adivinar");
+    const intentosElement = document.getElementById("intentos");
+    const mensajeElement = document.getElementById("mensaje");
+
+    palabraOcultaElement.textContent = palabraAdivinada.join(" ");
+
+    adivinarButton.addEventListener("click", function () {
+        const letra = entradaElement.value.toLowerCase();
+        if (letra.length !== 1) {
+            mensajeElement.textContent = "Ingresa una sola letra.";
+            return;
+        }
+
+        if (palabraOculta.includes(letra)) {
+            for (let i = 0; i < palabraOculta.length; i++) {
+                if (palabraOculta[i] === letra) {
+                    palabraAdivinada[i] = letra;
+                }
+            }
+            palabraOcultaElement.textContent = palabraAdivinada.join(" ");
+        } else {
+            intentos--;
+            intentosElement.textContent = intentos;
+        }
+
+        if (intentos === 0) {
+            mensajeElement.textContent = "Perdiste. La palabra era: " + palabraOculta;
+            adivinarButton.disabled = true;
+        }
+
+        if (palabraAdivinada.join("") === palabraOculta) {
+            mensajeElement.textContent = "¡Ganaste! La palabra era: " + palabraOculta;
+            adivinarButton.disabled = true;
+        }
+    });
+});
+    </script>
+</body>
+</html>

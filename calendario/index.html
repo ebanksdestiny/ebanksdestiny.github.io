@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendario Interactivo</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.calendar {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="calendar">
+        <div class="month">
+            <button id="prevMonth">Anterior</button>
+            <h2 id="monthYear">Octubre 2023</h2>
+            <button id="nextMonth">Siguiente</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const calendarBody = document.getElementById("calendarBody");
+    const monthYear = document.getElementById("monthYear");
+    const prevMonth = document.getElementById("prevMonth");
+    const nextMonth = document.getElementById("nextMonth");
+
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
+
+    renderCalendar(currentMonth, currentYear);
+
+    prevMonth.addEventListener("click", function () {
+        currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    nextMonth.addEventListener("click", function () {
+        currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+        currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    function renderCalendar(month, year) {
+        currentDate = new Date(year, month, 1);
+        monthYear.textContent = new Intl.DateTimeFormat("es", { year: "numeric", month: "long" }).format(currentDate);
+        calendarBody.innerHTML = "";
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDay = new Date(year, month + 1, 0).getDate();
+
+        let day = 1;
+        for (let i = 0; i < 6; i++) {
+            const row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+                const cell = document.createElement("td");
+                if (i === 0 && j < firstDay) {
+                   
+                } else if (day > lastDay) {
+                   
+                } else {
+                    cell.textContent = day;
+                    day++;
+                }
+                row.appendChild(cell);
+            }
+            calendarBody.appendChild(row);
+        }
+    }
+});
+    </script>
+</body>
+</html>

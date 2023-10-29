@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Tareas pendientes</title>
+    <link rel="stylesheet"  href="estilo.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    background-color: palevioletred; 
+    margin: 0;
+
+}
+
+.container {
+    width: 300px;
+    margin: 0 auto;
+}
+
+ul {
+    list-style-type: decimal;
+    padding: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+li.completed {
+    text-decoration: line-through;
+}
+
+
+
+button {
+    margin-right: 0px;
+    background-color: aqua;
+    padding: 15px;
+}
+
+
+.large-input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.add-button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20;
+}
+
+input[type="date"],
+input[type="text"] {
+    width: 100%;
+    margin-bottom: 20px; 
+    padding: 20px; 
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+        <div class="input-container">
+            <input type="text" id="task" placeholder="Nueva tarea" class="large-input">
+            <input type="date" id="dueDate" class="large-input" placeholder="Fecha de vencimiento">
+            <button class="add-button" onclick="addTask()">Agregar</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const taskList = [];
+
+function addTask() {
+    const taskInput = document.getElementById("task");
+    const dueDateInput = document.getElementById("dueDate");
+    const taskText = taskInput.value.trim();
+    const dueDate = dueDateInput.value;
+
+    if (taskText !== "") {
+        taskList.push({ text: taskText, dueDate: dueDate, completed: false });
+        taskInput.value = "";
+        dueDateInput.value = "";
+        displayTasks();
+    }
+}
+
+function displayTasks() {
+    const taskListElement = document.getElementById("taskList");
+    taskListElement.innerHTML = "";
+
+    taskList.forEach((task, index) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>Tarea:</strong> ${task.text}<br>
+                             <strong>Fecha de Vencimiento:</strong> ${task.dueDate}`;
+
+        if (task.completed) {
+            listItem.innerHTML += "<br><strong>Estado:</strong> Completada";
+        }
+
+        const completeButton = document.createElement("button");
+        completeButton.textContent = task.completed ? "Reabrir" : "Completar";
+        completeButton.addEventListener("click", () => toggleTaskCompletion(index));
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Eliminar";
+        deleteButton.addEventListener("click", () => deleteTask(index));
+
+        listItem.appendChild(completeButton);
+        listItem.appendChild(deleteButton);
+
+        taskListElement.appendChild(listItem);
+    });
+}
+
+function toggleTaskCompletion(index) {
+    taskList[index].completed = !taskList[index].completed;
+    displayTasks();
+}
+
+function deleteTask(index) {
+    taskList.splice(index, 1);
+    displayTasks();
+}
+
+displayTasks();
+    </script>
+</body>
+</html>

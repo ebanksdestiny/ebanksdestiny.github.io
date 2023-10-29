@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teléfono Funcional</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+}
+
+
+.telefono {
+    background-color: #ffc0cb;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+    </style>
+</head>
+<body>
+    <div class="telefono">
+        <div class="pantalla">
+            <h1>Tu Teléfono Funcional</h1>
+            <div class="numero-llamada" id="numero-llamada">-</div>
+            <div class="llamada-en-curso" id="llamada-en-curso">-</div>
+            <div class="teclado">
+                <div class="fila">
+                    <button onclick="marcar('1')">1</button>
+                    <button onclick="marcar('2')">2</button>
+                    <button onclick="marcar('3')">3</button>
+                </div>
+                <div class="fila">
+                    <button onclick="marcar('4')">4</button>
+                    <button onclick="marcar('5')">5</button>
+                    <button onclick="marcar('6')">6</button>
+                </div>
+                <div class="fila">
+                    <button onclick="marcar('7')">7</button>
+                    <button onclick="marcar('8')">8</button>
+                    <button onclick="marcar('9')">9</button>
+                </div>
+                <div class="fila">
+                    <button onclick="marcar('*')">*</button>
+                    <button onclick="marcar('0')">0</button>
+                    <button onclick="marcar('#')">#</button>
+                </div>
+            </div>
+            <button id="llamar" onclick="realizarLlamada()">Llamar</button>
+            <button id="colgar" onclick="colgarLlamada()" disabled>Colgar</button>
+        </div>
+    </div>
+    <script>
+        let llamadaActiva = false;
+let numeroMarcado = "";
+
+function realizarLlamada() {
+    if (!llamadaActiva && numeroMarcado !== "") {
+        document.getElementById("numero-llamada").textContent = "Llamando a: " + numeroMarcado;
+        document.getElementById("llamada-en-curso").textContent = "En curso";
+        document.getElementById("llamar").disabled = true;
+        document.getElementById("colgar").disabled = false;
+        llamadaActiva = true;
+    }
+}
+
+function colgarLlamada() {
+    if (llamadaActiva) {
+        document.getElementById("numero-llamada").textContent = "-";
+        document.getElementById("llamada-en-curso").textContent = "-";
+        document.getElementById("llamar").disabled = false;
+        document.getElementById("colgar").disabled = true;
+        llamadaActiva = false;
+    }
+}
+
+function marcar(digito) {
+    numeroMarcado += digito;
+    document.getElementById("numero-llamada").textContent = numeroMarcado;
+}
+    </script>
+</body>
+</html>

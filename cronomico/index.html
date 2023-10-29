@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro</title>
+</head>
+<body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: aqua;
+        }
+
+        .stopwatch {
+            font-size: 2em;
+            margin: 20px;
+        }
+
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+    <div id="stopwatch" class="stopwatch">0:00</div>
+    <button id="startButton">Iniciar</button>
+    <button id="stopButton">Detener</button>
+    <button id="resetButton">Reiniciar</button>
+    <script>
+        let startTime;
+        let interval;
+
+        const stopwatch = document.getElementById('stopwatch');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const resetButton = document.getElementById('resetButton');
+
+        startButton.addEventListener('click', function () {
+            startTime = Date.now() - (interval || 0);
+            interval = setInterval(updateStopwatch, 1000);
+            startButton.disabled = true;
+            stopButton.disabled = false;
+        });
+
+        stopButton.addEventListener('click', function () {
+            clearInterval(interval);
+            interval = null;
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        });
+
+        resetButton.addEventListener('click', function () {
+            clearInterval(interval);
+            interval = null;
+            stopwatch.textContent = '0:00';
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        });
+
+        function updateStopwatch() {
+            const currentTime = Date.now() - startTime;
+            const totalSeconds = Math.floor(currentTime / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            stopwatch.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+    </script>
+
+</body>
+</html>
